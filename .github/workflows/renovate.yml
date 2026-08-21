@@ -28,3 +28,43 @@ jobs:
           RENOVATE_PLATFORM: github
           RENOVATE_REPOSITORIES: ${{ github.repository }}
           RENOVATE_REQUIRE_CONFIG: required
+
+  renovate-patched:
+    name: Renovate with PR #45385 patch
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout Renovate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: renovatebot/renovate
+          ref: main
+          persist-credentials: false
+          show-progress: false
+
+      - name: Apply PR #45385 patch
+        run: |
+          curl --fail --location --silent --show-error \
+            https://github.com/renovatebot/renovate/pull/45385.patch \
+            --output "${RUNNER_TEMP}/renovate-pr-45385.patch"
+          git apply "${RUNNER_TEMP}/renovate-pr-45385.patch"
+
+      - name: Setup pnpm
+        uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2 # v2.0.2
+        with:
+          install: false
+          runtime: node@24
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run patched Renovate
+        run: pnpm start
+        env:
+          LOG_LEVEL: debug
+          RENOVATE_DRY_RUN: full
+          RENOVATE_ONBOARDING: "false"
+          RENOVATE_PLATFORM: github
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_REQUIRE_CONFIG: required
+          RENOVATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
