@@ -30,7 +30,7 @@ jobs:
           RENOVATE_REQUIRE_CONFIG: required
 
   renovate-patched:
-    name: Renovate with PR #45385 patch
+    name: "Renovate with PR #45385 patch"
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -42,7 +42,7 @@ jobs:
           persist-credentials: false
           show-progress: false
 
-      - name: Apply PR #45385 patch
+      - name: "Apply PR #45385 patch"
         run: |
           curl --fail --location --silent --show-error \
             https://github.com/renovatebot/renovate/pull/45385.patch \
