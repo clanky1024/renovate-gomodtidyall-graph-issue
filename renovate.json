@@ -1,0 +1,20 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "enabledManagers": ["gomod"],
+  "packageRules": [
+    {
+      "matchManagers": ["gomod"],
+      "matchPackageNames": [
+        "go",
+        "github.com/clanky1024/renovate-gomodtidyall-graph-issue/service",
+        "github.com/clanky1024/renovate-gomodtidyall-graph-issue/tooling"
+      ],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["gomod"],
+      "matchPackageNames": ["go.yaml.in/yaml/v3"],
+      "postUpdateOptions": ["gomodTidyAll"]
+    }
+  ]
+}
